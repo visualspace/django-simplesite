@@ -40,13 +40,18 @@ def menu(request):
             # a wrapper catching exceptions
             menu_obj = menu_list.get(slug=menu_slug)
 
+            # get the default menu item which is used to fall back on a default
+            # sidebar.
+            default_menu_obj = menu_list.get(slug='default')
+
             logger.debug('menu=%s', menu_obj)
 
             # Find the corresponding submenu items
             submenu_list = Submenu.objects.filter(menu__slug=menu_slug)
 
             menu_dict.update({'menu_current': menu_obj,
-                              'submenu_list': submenu_list.filter(visible=True)})
+                              'submenu_list': submenu_list.filter(visible=True),
+                              'default_menu': default_menu_obj })
 
             submenu_slug = kwargs.get('submenu_slug')
 
