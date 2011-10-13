@@ -135,3 +135,9 @@ class Submenu(MenuBase):
                        kwargs={'menu_slug':self.menu.slug,
                                'submenu_slug':self.slug})
 
+
+class SideBarItem(models.Model):
+    page = models.ForeignKey(Page, null=True, blank=True,
+                             verbose_name=_('page'))
+    menu = models.ForeignKey(Menu, null=True, blank=True,
+                             verbose_name=_('menu'))

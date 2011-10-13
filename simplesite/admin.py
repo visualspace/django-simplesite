@@ -14,7 +14,7 @@ from django.contrib.sitemaps import ping_google
 from django.conf.urls.defaults import patterns, url
 
 from models import Menu, Submenu, Page, PageImage, MenuTranslation, \
-                   SubmenuTranslation, PageTranslation
+                   SubmenuTranslation, PageTranslation, SideBarItem
 from baseadmin import BasePageAdmin, BaseMenuAdmin, TinyMCEAdminMixin
 
 from multilingual_model.admin import TranslationInline
@@ -55,6 +55,8 @@ class MenuTranslationInline(TranslationInline):
 class SubmenuTranslationInline(TranslationInline):
     model = SubmenuTranslation
 
+class SideBarItemInline(admin.TabularInline):
+    model = SideBarItem
 
 class MenuAdmin(BaseMenuAdmin):
     list_display = ('ordering', 'slug', 'visible', 'admin_page', 'admin_submenu')
@@ -69,7 +71,7 @@ class MenuAdmin(BaseMenuAdmin):
     admin_submenu.short_description = ''
     admin_submenu.allow_tags = True
 
-    inlines = [MenuTranslationInline, ]
+    inlines = [MenuTranslationInline, SideBarItemInline]
 
 
 class SubmenuAdmin(BaseMenuAdmin):
