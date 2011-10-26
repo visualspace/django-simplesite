@@ -135,9 +135,12 @@ class Submenu(MenuBase):
                        kwargs={'menu_slug':self.menu.slug,
                                'submenu_slug':self.slug})
 
+class SideBarMenu(models.Model):
+    menu_slug = models.CharField(verbose_name='menu_slug', max_length=100 , choices=[('__default', '__default'), ] + [(m.slug, m.slug) for m in Menu.objects.all()])
+
 
 class SideBarItem(models.Model):
     page = models.ForeignKey(Page, null=True, blank=True,
                              verbose_name=_('page'))
-    menu = models.ForeignKey(Menu, null=True, blank=True,
-                             verbose_name=_('menu'))
+    sidebar = models.ForeignKey(SideBarMenu, null=True, blank=True,
+                             verbose_name=_('sidebar'))

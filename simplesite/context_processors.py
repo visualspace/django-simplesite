@@ -3,7 +3,7 @@ logger = logging.getLogger('simplesite')
 
 from django.core.urlresolvers import resolve, Resolver404
 
-from simplesite.models import Menu, Submenu
+from simplesite.models import Menu, Submenu, SideBarMenu
 from simplesite.utils import ignore_path
 
 
@@ -29,6 +29,7 @@ def menu(request):
                  'submenu_list': None,
                  }
 
+
     try:
         view, args, kwargs = resolve(request.path_info, urlconf='simplesite.urls')
         logger.debug('menu url matched: args=%s, kwargs=%s', args, kwargs)
@@ -40,9 +41,6 @@ def menu(request):
             # a wrapper catching exceptions
             menu_obj = menu_list.get(slug=menu_slug)
 
-            # get the default menu item which is used to fall back on a default
-            # sidebar.
-            default_menu_obj = menu_list.get(slug='default')
 
             logger.debug('menu=%s', menu_obj)
 
@@ -50,8 +48,7 @@ def menu(request):
             submenu_list = Submenu.objects.filter(menu__slug=menu_slug)
 
             menu_dict.update({'menu_current': menu_obj,
-                              'submenu_list': submenu_list.filter(visible=True),
-                              'default_menu': default_menu_obj })
+                              'submenu_list': submenu_list.filter(visible=True) })
 
             submenu_slug = kwargs.get('submenu_slug')
 
@@ -78,5 +75,12 @@ def menu(request):
         # Submenu.DoesNotExist: the submenu_slug found doesn't match any submenu
 
         logger.debug('Current menu item not identified, error: %s' % e)
+
+    try:
+        sidebar = SideBarMenu.objects.get(menu_slug=menu_slug)
+    except (Resolver404, SideBarMenu.DoesNotExist) as e:
+        sidebar = SideBarMenu.objects.get(menu_slug='__default')
+
+    menu_dict.update({'sidebar': sidebar, })
 
     return menu_dict
