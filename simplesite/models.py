@@ -135,8 +135,12 @@ class Submenu(MenuBase):
                        kwargs={'menu_slug':self.menu.slug,
                                'submenu_slug':self.slug})
 
+from django.utils.functional import lazy
+def url_list():
+    return [('__default', '__default'), ] + [(m.slug, m.slug) for m in Menu.objects.all()]
+
 class SideBarMenu(models.Model):
-    menu_slug = models.CharField(verbose_name='menu_slug', max_length=100 , choices=[('__default', '__default'), ] + [(m.slug, m.slug) for m in Menu.objects.all()])
+    menu_slug = models.CharField(verbose_name='menu_slug', max_length=100 , choices=lazy(url_list, list)())
 
 
 class SideBarItem(models.Model):
