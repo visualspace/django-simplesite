@@ -79,7 +79,10 @@ def menu(request):
     try:
         sidebar = SideBarMenu.objects.get(menu_slug=menu_slug)
     except (Resolver404, SideBarMenu.DoesNotExist) as e:
-        sidebar = SideBarMenu.objects.get(menu_slug='__default')
+        try:
+            sidebar = SideBarMenu.objects.get(menu_slug='__default')
+        except (Resolver404, SideBarMenu.DoesNotExist) as e:
+            sidebar = None
 
     menu_dict.update({'sidebar': sidebar, })
 
