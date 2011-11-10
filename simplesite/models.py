@@ -142,6 +142,8 @@ def url_list():
 class SideBarMenu(models.Model):
     menu_slug = models.CharField(verbose_name='menu_slug', max_length=100 , choices=lazy(url_list, list)())
 
+    def __str__(self):
+        return self.menu_slug
 
 class SideBarItem(models.Model):
     page = models.ForeignKey(Page, null=True, blank=True,
