@@ -69,6 +69,16 @@ def menu(request):
                 if menu_obj.page:
                     menu_dict.update({'page_current': menu_obj.page})
 
+        try:
+            sidebar = SideBarMenu.objects.get(menu_slug=menu_slug)
+        except (Resolver404, SideBarMenu.DoesNotExist) as e:
+            try:
+                sidebar = SideBarMenu.objects.get(menu_slug='__default')
+            except (Resolver404, SideBarMenu.DoesNotExist) as e:
+                sidebar = None
+
+        menu_dict.update({'sidebar': sidebar, })
+
     except (Resolver404, Menu.DoesNotExist, Submenu.DoesNotExist) as e:
         # Resolver404: the URL pattern doesn't match any URL
         # Menu.DoesNotExist: the menu_slug found in the URL match any menu
@@ -76,14 +86,5 @@ def menu(request):
 
         logger.debug('Current menu item not identified, error: %s' % e)
 
-    try:
-        sidebar = SideBarMenu.objects.get(menu_slug=menu_slug)
-    except (Resolver404, SideBarMenu.DoesNotExist) as e:
-        try:
-            sidebar = SideBarMenu.objects.get(menu_slug='__default')
-        except (Resolver404, SideBarMenu.DoesNotExist) as e:
-            sidebar = None
-
-    menu_dict.update({'sidebar': sidebar, })
 
     return menu_dict
