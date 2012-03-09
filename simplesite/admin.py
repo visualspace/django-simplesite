@@ -13,7 +13,7 @@ from django.contrib import admin
 from django.contrib.sitemaps import ping_google
 from django.conf.urls.defaults import patterns, url
 
-from models import Menu, Submenu, Page, PageImage, PageFile MenuTranslation, \
+from models import Menu, Submenu, Page, PageImage, PageFile, MenuTranslation, \
                    SubmenuTranslation, PageTranslation
 from baseadmin import BasePageAdmin, BaseMenuAdmin, TinyMCEAdminMixin
 
@@ -39,6 +39,11 @@ class PageImageInline(AdminInlineImageMixin, admin.TabularInline):
     extra = 1
 
 
+class PageFileInline(admin.TabularInline):
+    model = PageFile
+    extra = 1
+
+
 class PageAdmin(BasePageAdmin):
     inlines = (PageTranslationInline, PageImageInline, PageFileInline )
     list_display = ('admin_title', 'publish')
@@ -46,11 +51,6 @@ class PageAdmin(BasePageAdmin):
     def admin_title(self, obj):
         return unicode(obj)
     admin_title.short_description = _('title')
-
-
-class PageFileInline(admin.TabularInline):
-    model = PageFile
-    extra = 1
 
 
 class MenuTranslationInline(TranslationInline):
