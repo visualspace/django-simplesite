@@ -49,7 +49,7 @@ class PageAdmin(BasePageAdmin):
 
 
 class PageFileInline(admin.TabularInline):
-    model = ArticleFile
+    model = PageFile
     extra = 1
 
 
