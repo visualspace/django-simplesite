@@ -4,11 +4,13 @@ from django.http import Http404
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
 from simplesite.models import Page, Menu, Submenu
 
 logger = logging.getLogger('simplesite')
 
+@login_required
 def page(request, menu_slug=None, submenu_slug=None):
     """ This is, basically, a wrapper around the 
         menu RequestContextProcessor, allowing us
