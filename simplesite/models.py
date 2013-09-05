@@ -88,12 +88,28 @@ class MenuTranslation(MultilingualTranslation, TitleAbstractBase):
     parent = models.ForeignKey('Menu', related_name='translations')
 
 
+class Viewport(models.Model):
+    """ A list of viewports for every menu item. """
+
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Menu(MenuBase):
     """ Main menu """
 
     ordering = models.SmallIntegerField(verbose_name=_('ordering'),
                                         default=lambda: get_next_ordering(Menu),
                                         db_index=True)
+
+    viewports = models.ManyToManyField(Viewport)
+
+    def get_viewport_classes(self):
+        viewports = self.viewports.all()
+
+        return " ".join(["show-on-" + viewport.name for viewport in viewports])
 
     class Meta:
         verbose_name = _('menu item')
