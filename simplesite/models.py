@@ -104,7 +104,7 @@ class Menu(MenuBase):
                                         default=lambda: get_next_ordering(Menu),
                                         db_index=True)
 
-    viewports = models.ManyToManyField(Viewport)
+    viewports = models.ManyToManyField(Viewport, blank=True)
 
     def get_viewport_classes(self):
         viewports = self.viewports.all()
