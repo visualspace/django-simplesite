@@ -1,6 +1,6 @@
-{{ page.menu.title }}
-{{ page.menu.slug }}
-{{ page.submenu.title }}
-{{ page.submenu.slug }}
-{{ page.title }}
-{{ page.content }}
+{{ object.menu.title }}
+{{ object.menu.slug }}
+{{ object.submenu.title }}
+{{ object.submenu.slug }}
+{{ object.title }}
+{{ object.content }}
