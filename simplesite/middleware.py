@@ -8,7 +8,12 @@ logger = logging.getLogger('simplesite')
 
 
 class SimplesiteFallbackMiddleware(object):
-    def process_response(self, request, response):
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
         if response.status_code != 404:
             # No need to check for a flatpage for non-404 responses.
             return response
