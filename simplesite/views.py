@@ -1,12 +1,11 @@
-import logging
-logger = logging.getLogger('simplesite')
-
 from django.http import Http404
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 
 from .context_processors import menu as menu_processor
+
+import logging
+logger = logging.getLogger('simplesite')
 
 
 def page(request, menu_slug=None, submenu_slug=None):
@@ -49,4 +48,4 @@ def page(request, menu_slug=None, submenu_slug=None):
 
     logger.debug('Searching for templates in %s' % template_names)
 
-    return render_to_response(template_names, RequestContext(request))
+    return render(request, template_names)
